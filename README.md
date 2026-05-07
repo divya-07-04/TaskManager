@@ -27,3 +27,17 @@ A modern full-stack web application developed using Spring Boot, MySQL, HTML, CS
 - MySQL
 
 ## Project Structure
+src/main/java
+src/main/resources/static
+index.html
+style.css
+script.js
+
+## How to Run
+
+1. Clone the repository
+2. Open project in Eclipse
+3. Configure MySQL database
+4. Run Spring Boot application
+5. Open browser:
+http://localhost:8081/index.html
