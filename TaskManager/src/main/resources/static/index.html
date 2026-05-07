@@ -1,35 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>Team Task Manager</title>
 
     <link rel="stylesheet" href="style.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
 </head>
 
 <body>
 
 <div class="container">
 
+    <div class="navbar">
+
+        <div class="logo">
+            Team Task Manager
+        </div>
+
+        <div class="user-info">
+
+            <span id="username"></span>
+
+            <span id="roleBadge"></span>
+
+            <button onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
     <div class="header">
-        <h1>Student Task Manager</h1>
-        <p>Manage your daily tasks efficiently</p>
+
+        <h1>
+            Team Task Manager
+        </h1>
+
+        <p>
+            Manage projects, assign tasks,
+            and track team progress efficiently
+        </p>
+
     </div>
 
     <div class="task-form">
 
-        <input type="text" id="title" placeholder="Task Title">
+        <div class="form-grid">
 
-        <textarea id="description" placeholder="Task Description"></textarea>
+            <input type="text"
+            id="title"
+            placeholder="Task Title">
 
-        <button onclick="addTask()">Add Task</button>
+            <input type="text"
+            id="project"
+            placeholder="Project Name">
+
+            <input type="text"
+            id="assignedTo"
+            placeholder="Assign To">
+
+            <input type="date"
+            id="dueDate">
+
+        </div>
+
+        <textarea
+        id="description"
+        placeholder="Task Description"></textarea>
+
+        <button onclick="addTask()">
+            Create Task
+        </button>
 
     </div>
 
-    <div id="taskList" class="task-grid"></div>
+    <div id="taskList"
+    class="task-grid"></div>
 
 </div>
 

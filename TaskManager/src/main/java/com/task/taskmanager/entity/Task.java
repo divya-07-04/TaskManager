@@ -13,8 +13,16 @@ public class Task {
     private Integer id;
 
     private String title;
+
     private String description;
+
+    private String project;
+
+    private String assignedTo;
+
     private String status;
+
+    private String dueDate;
 
     public Task() {
     }
@@ -43,11 +51,35 @@ public class Task {
         this.description = description;
     }
 
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+    public String getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(String assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 }

@@ -1,42 +1,108 @@
+let currentUser =
+JSON.parse(localStorage.getItem("user"));
+
+if(!currentUser){
+
+    window.location.href = "login.html";
+}
+
 const api = "http://localhost:8081";
+
+document.getElementById("username")
+.innerText = currentUser.name;
+
+document.getElementById("roleBadge")
+.innerText = currentUser.role;
 
 async function addTask() {
 
-    let title = document.getElementById("title").value;
-    let description = document.getElementById("description").value;
+    if(currentUser.role !== "ADMIN"){
 
-    if(title === "" || description === ""){
+        alert("Only ADMIN can create tasks");
+
+        return;
+    }
+
+    let title =
+    document.getElementById("title").value;
+
+    let project =
+    document.getElementById("project").value;
+
+    let assignedTo =
+    document.getElementById("assignedTo").value;
+
+    let dueDate =
+    document.getElementById("dueDate").value;
+
+    let description =
+    document.getElementById("description").value;
+
+    if(
+        title === "" ||
+        project === "" ||
+        assignedTo === "" ||
+        dueDate === "" ||
+        description === ""
+    ){
         alert("Please fill all fields");
+
         return;
     }
 
     let task = {
+
         title:title,
+
+        project:project,
+
+        assignedTo:assignedTo,
+
+        dueDate:dueDate,
+
         description:description,
+
         status:"Pending"
     };
 
     await fetch(api + "/add",{
+
         method:"POST",
+
         headers:{
             "Content-Type":"application/json"
         },
+
         body:JSON.stringify(task)
     });
 
-    document.getElementById("title").value="";
-    document.getElementById("description").value="";
+    clearForm();
 
     loadTasks();
 }
 
+function clearForm(){
+
+    document.getElementById("title").value = "";
+
+    document.getElementById("project").value = "";
+
+    document.getElementById("assignedTo").value = "";
+
+    document.getElementById("dueDate").value = "";
+
+    document.getElementById("description").value = "";
+}
+
 async function loadTasks() {
 
-    let response = await fetch(api + "/tasks");
+    let response =
+    await fetch(api + "/tasks");
 
-    let data = await response.json();
+    let data =
+    await response.json();
 
-    let output="";
+    let output = "";
 
     if(data.length === 0){
 
@@ -49,18 +115,52 @@ async function loadTasks() {
 
     data.forEach(task => {
 
+        let today = new Date();
+
+        let taskDate =
+        new Date(task.dueDate);
+
+        let overdue =
+        task.status !== "Completed" &&
+        taskDate < today;
+
         output += `
-        
+
         <div class="task-card">
 
             <h3>${task.title}</h3>
 
-            <p>${task.description}</p>
+            <p>
+                <b>Project:</b> ${task.project}
+            </p>
 
-            <span class="status"
+            <p>
+                <b>Assigned To:</b>
+                ${task.assignedTo}
+            </p>
+
+            <p>
+                ${task.description}
+            </p>
+
+            <p class="${overdue ? 'overdue' : ''}">
+
+                <b>Due Date:</b>
+                ${task.dueDate}
+
+            </p>
+
+            <span class="tag"
             style="
-            background:${task.status==='Completed' ? '#2ecc71' : '#ffeaa7'};
-            color:${task.status==='Completed' ? 'white' : 'black'};
+            background:
+            ${task.status === 'Completed'
+                ? '#22c55e'
+                : '#facc15'};
+
+            color:
+            ${task.status === 'Completed'
+                ? 'white'
+                : 'black'};
             ">
             ${task.status}
             </span>
@@ -72,10 +172,18 @@ async function loadTasks() {
                 Complete
                 </button>
 
-                <button class="delete-btn"
-                onclick="deleteTask(${task.id})">
-                Delete
-                </button>
+                ${
+                    currentUser.role === "ADMIN"
+                    ?
+                    `
+                    <button class="delete-btn"
+                    onclick="deleteTask(${task.id})">
+                    Delete
+                    </button>
+                    `
+                    :
+                    ""
+                }
 
             </div>
 
@@ -83,12 +191,14 @@ async function loadTasks() {
         `;
     });
 
-    document.getElementById("taskList").innerHTML = output;
+    document.getElementById("taskList")
+    .innerHTML = output;
 }
 
 async function deleteTask(id){
 
     await fetch(api + "/delete/" + id,{
+
         method:"DELETE"
     });
 
@@ -97,23 +207,36 @@ async function deleteTask(id){
 
 async function completeTask(id){
 
-    let response = await fetch(api + "/tasks");
+    let response =
+    await fetch(api + "/tasks");
 
-    let tasks = await response.json();
+    let tasks =
+    await response.json();
 
-    let task = tasks.find(t => t.id === id);
+    let task =
+    tasks.find(t => t.id === id);
 
     task.status = "Completed";
 
     await fetch(api + "/add",{
+
         method:"POST",
+
         headers:{
             "Content-Type":"application/json"
         },
+
         body:JSON.stringify(task)
     });
 
     loadTasks();
+}
+
+function logout(){
+
+    localStorage.removeItem("user");
+
+    window.location.href = "login.html";
 }
 
 loadTasks();
