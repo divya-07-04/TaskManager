@@ -6,7 +6,7 @@ if(!currentUser){
     window.location.href = "login.html";
 }
 
-const api = "http://localhost:8081";
+const api = window.location.origin;
 
 document.getElementById("username")
 .innerText = currentUser.name;
