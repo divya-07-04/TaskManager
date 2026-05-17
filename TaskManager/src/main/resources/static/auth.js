@@ -1,4 +1,4 @@
-const api = "http://localhost:8081";
+const api = window.location.origin;
 
 async function signup(){
 
